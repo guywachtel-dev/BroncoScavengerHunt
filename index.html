@@ -6,13 +6,25 @@
     <title>Clue Page</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: "dapifer";
             background-color: #f4f4f9;
             margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            max-width: 70%;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
         }
         .container {
             background: white;
@@ -20,7 +32,17 @@
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             width: 300px;
+            margin: 50px auto;
             text-align: center;
+        }
+        .greeting {
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            margin: 50px auto;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
         }
         .clue {
             font-size: 18px;
@@ -31,17 +53,57 @@
             color: red;
             font-size: 16px;
         }
+        .name-input {
+            margin-top: 20px;
+        }
+        .name-input input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .name-input button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .name-input button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <img src="Inland+NW+Bronco+Club+(17).png" alt="Logo" class="logo">
+        <div class="title">Bronco GAMES Scavenger Hunt 2025</div>
+    </div>
+    <div id="greeting" class="greeting" style="display:none">
+        <div id="welcome" class="welcome"></div>
+    </div>
     <div class="container">
-        <div id="message" class="error">No clue available.</div>
+        <div id="message" class="error"></div>
         <div id="clue" class="clue" style="display:none"></div>
+        <div class="name-input" id="nameInput">
+            <input type="text" id="teamName" placeholder="Enter your Name/Team Name" required>
+            <button onclick="submitName()">Submit</button>
+        </div>
     </div>
 
     <script>
         // Define the GUIDs and their corresponding clues
-        const cluesMap = {"c2ca3b60-3d26-43a1-9d34-89c3f4d1fe2c":"This is the first clue;","613081b7-68d4-4a79-8556-35a0102c630a":"This is the second clue;","0493ae45-11de-4ed5-8483-6e6ad60e0b6e":"This is the third clue;","c366fe97-ef8e-4278-b26d-95f9e50b1c1f":"This is the nineteenth clue (jk, it's number 4);","4cc68c31-19a1-4b81-947b-8bd97e63978f":"This is the fifth clue;","64664c3c-5d33-4e68-b8d5-636fc0e1e65f":"This is the sixth clue;","3d0e88a8-0a47-4e00-82cb-ff4b083f97ef":"this is the seventh clue, and should appear on the second page;","ae299a7e-9cde-4f43-8d3b-aa8584a33323":"This is the eighth clue;","73f65cd5-c73d-4a3f-84a3-514e951a96ec":"This is the ninth clue;","331ef724-efde-4e79-8a6f-fb58c3119383":"This is the tenth clue;","0cc38b82-4ed3-494c-91cc-af3c496c2338":"This is the eleventh clue;","48187674-721e-45d3-ad13-b98e184c7f54":"This is the twelfth clue;","c3c93d09-032f-41ec-8081-b65d127f1dd3":"This is the thirteenth clue;"};
+        const cluesMap = {
+            "c2ca3b60-3d26-43a1-9d34-89c3f4d1fe2c": "Location 1;",
+            "613081b7-68d4-4a79-8556-35a0102c630a": "Location 2;",
+            "0493ae45-11de-4ed5-8483-6e6ad60e0b6e": "Location 3;",
+            "c366fe97-ef8e-4278-b26d-95f9e50b1c1f": "Location 4;",
+            "4cc68c31-19a1-4b81-947b-8bd97e63978f": "Location 5;",
+            "64664c3c-5d33-4e68-b8d5-636fc0e1e65f": "Location 6;"
+        };
 
         // Function to get the GUID from the URL
         function getGUIDFromURL() {
@@ -49,21 +111,100 @@
             return urlParams.get('guid');
         }
 
-        // Main logic
-        window.onload = function() {
+                // Shuffle an array
+                function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Get GUID from URL
+        function getGUIDFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('guid');
+        }
+
+        // Submit Name/Team Name
+        function submitName() {
+            const teamName = document.getElementById('teamName').value.trim();
+            if (!teamName) {
+                alert('Please enter a valid name or team name.');
+                return;
+            }
+
+            const cluesArray = shuffleArray(Object.values(cluesMap));
+            const userObject = {
+                name: teamName,
+                clueNums: cluesArray,
+                currentClueNum: 0
+            };
+
+            localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
+            document.getElementById('nameInput').style.display = 'none';
+            document.getElementById('greeting').style.display = '';
+            document.getElementById('welcome').textContent = `Happy Hunting, ${userObject.name}!`; // Update the greeting
+            displayClue();
+        }
+
+        // Display Clue
+        function displayClue() {
             const guid = getGUIDFromURL();
-            const messageDiv = document.getElementById("message");
-            const clueDiv = document.getElementById("clue");
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
+            const messageDiv = document.getElementById('message');
+            const clueDiv = document.getElementById('clue');
+
+            if (!userObject) {
+                messageDiv.textContent = 'Please enter your name or team name first.';
+                return;
+            }
 
             if (guid && cluesMap[guid]) {
-                // Show the corresponding clue
-                clueDiv.textContent = cluesMap[guid];
-                clueDiv.style.display = "block";
-                messageDiv.style.display = "none"; // Hide the error message
+                const currentClueKey = userObject.clueNums[userObject.currentClueNum];
+                if (guid === currentClueKey) {
+                    clueDiv.textContent = cluesMap[guid];
+                    clueDiv.style.display = 'block';
+                    messageDiv.style.display = 'none';
+                } else {
+                    messageDiv.textContent = 'This clue is not available yet.';
+                }
             } else {
-                messageDiv.textContent = "Invalid or missing GUID. Access denied.";
+                messageDiv.textContent = 'Clues will go here';
             }
         }
+
+        function getClues() {
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
+            currentClueIndex = userObject.currentClueNum
+            console.log(currentClueIndex)
+            // get the list of clues
+            currentClueText = userObject.clueNums[currentClueIndex]
+            console.log(currentClueText)
+
+            // next clue
+            nextClueText = userObject.clueNums[currentClueIndex + 1]
+
+
+            // get the guid from the url
+
+            // match the guid to the next clue
+
+            
+        }
+
+        // On load, check if the user is already set
+        window.onload = function () {
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
+            if (userObject) {
+                document.getElementById('nameInput').style.display = 'none';
+                document.getElementById('greeting').style.display = '';
+                document.getElementById('welcome').textContent = `Happy Hunting, ${userObject.name}!`; // Update the greeting
+                displayClue();
+                getClues()
+                console.log(userObject)
+            }
+        };
     </script>
 </body>
 </html>
