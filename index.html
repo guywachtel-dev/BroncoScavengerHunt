@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clue Page</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js"></script> -->
+
+    <title>Bronco Games Scavenger Hunt</title>
     <style>
         body {
-            font-family: "dapifer";
-            background-color: #f4f4f9;
+            font-family: "arial";
+            background-color: #dcdcdc;
             margin: 0;
             padding: 0;
+            color: #262440;
         }
         .header {
             text-align: center;
@@ -26,7 +31,7 @@
             font-weight: bold;
             color: #333;
         }
-        .container {
+        .formContainer {
             background: white;
             padding: 20px;
             border-radius: 8px;
@@ -43,11 +48,6 @@
             text-align: center;
             font-size: 20px;
             font-weight: bold;
-        }
-        .clue {
-            font-size: 18px;
-            color: #333;
-            margin: 10px 0;
         }
         .error {
             color: red;
@@ -75,6 +75,82 @@
         .name-input button:hover {
             background-color: #0056b3;
         }
+        /* Clue list for all clues */
+        .clue-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px; /* Spacing between clues */
+        }
+
+        /* Individual clue */
+        .clue {
+        display: flex;
+        align-items: center;
+        border-radius: 12px; 
+        margin-left: 8px;
+        margin-right: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+        .clue.working {
+            background:#bbd1ff
+        }
+        .clue.solved {
+            background:#c7f1b6
+        }
+        .clue.complete {
+            background: linear-gradient(
+                135deg,
+                #ffd700, /* Gold */
+                #ffcc00, /* Bright Yellow-Gold */
+                #e6ac00 /* Deep Gold */
+
+            );
+        }
+        /* Circle with "?" */
+        .clue-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%; /* Perfect circle */
+        margin-right: 12px; /* Space between icon and text */
+        flex-shrink: 0;
+        }
+        .clue-icon.working {
+            background: #0026ff; /* Blue circle */
+            color: white;
+        }
+        .clue-icon.solved {
+            background: #34df2e;
+            color: black;
+        }
+        .clue-icon.complete {
+            background: #e6ac00;
+            color: #fff8dc;
+        }
+
+        /* Text container for clue */
+        .clue-text {
+        display: flex;
+        flex-direction: column;
+        }
+
+        /* Clue title styling */
+        .clue-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333; /* Darker text color */
+        }
+
+        /* Clue subtitle styling */
+        .clue-subtitle {
+        font-size: 14px;
+        color: #666; /* Lighter text color */
+        }
     </style>
 </head>
 <body>
@@ -85,34 +161,48 @@
     <div id="greeting" class="greeting" style="display:none">
         <div id="welcome" class="welcome"></div>
     </div>
-    <div class="container">
+    <div class="formContainer" id="formContainer">
         <div id="message" class="error"></div>
-        <div id="clue" class="clue" style="display:none"></div>
         <div class="name-input" id="nameInput">
             <input type="text" id="teamName" placeholder="Enter your Name/Team Name" required>
             <button onclick="submitName()">Submit</button>
         </div>
     </div>
 
-    <script>
-        // Define the GUIDs and their corresponding clues
-        const cluesMap = {
-            "c2ca3b60-3d26-43a1-9d34-89c3f4d1fe2c": "Location 1;",
-            "613081b7-68d4-4a79-8556-35a0102c630a": "Location 2;",
-            "0493ae45-11de-4ed5-8483-6e6ad60e0b6e": "Location 3;",
-            "c366fe97-ef8e-4278-b26d-95f9e50b1c1f": "Location 4;",
-            "4cc68c31-19a1-4b81-947b-8bd97e63978f": "Location 5;",
-            "64664c3c-5d33-4e68-b8d5-636fc0e1e65f": "Location 6;"
-        };
+    <div class="clue-list"></div>
 
-        // Function to get the GUID from the URL
-        function getGUIDFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('guid');
+    <script>
+
+        function createShuffledCluesMap() {
+            const cluesMap = {
+                "c2ca3b60-3d26-43a1-9d34-89c3f4d1fe2c": ["Red Wagon", "A giant plaything where kids love to slide, this crimson cart can fit the whole ride!"],
+                "613081b7-68d4-4a79-8556-35a0102c630a": ["Garbage Goat", "Feed me your trash, I’ll make it disappear—look for me in Riverfront Park near here."],
+                "0493ae45-11de-4ed5-8483-6e6ad60e0b6e": ["Dishman Hills", "A natural escape with trails to roam, these hills are where hikers feel at home."],
+                "c366fe97-ef8e-4278-b26d-95f9e50b1c1f": ["Milk Bottle", "A creamy delight in a bottle so tall, this landmark serves memories to all."],
+                "4cc68c31-19a1-4b81-947b-8bd97e63978f": ["Manito Park", "Gardens that bloom and a pond with ducks, this park is a treasure for all nature’s luck."],
+                "64664c3c-5d33-4e68-b8d5-636fc0e1e65f": ["Mirabeau Park", "By the waterfall’s song, where trails intertwine, this park invites you to unwind."]
+            };
+
+            // Convert the object into an array of entries
+
+            // Get the keys of the cluesMap and shuffle them
+            const shuffledKeys = shuffleArray(Object.keys(cluesMap));
+
+            // Create a new object with the shuffled keys
+            const shuffledCluesMap = {};
+            shuffledKeys.forEach(key => {
+                shuffledCluesMap[key] = cluesMap[key];
+            });
+
+            const cluesArray = Object.entries(shuffledCluesMap);
+
+            // Save the shuffled clues map to local storage
+            return cluesArray
+            // localStorage.setItem('shuffledCluesMap', JSON.stringify(shuffledCluesMap));
         }
 
-                // Shuffle an array
-                function shuffleArray(array) {
+        // Shuffle an array
+        function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
@@ -134,75 +224,153 @@
                 return;
             }
 
-            const cluesArray = shuffleArray(Object.values(cluesMap));
+            // Get today's date
+            const now = new Date();
+            
+            // Set it to today at 7 AM
+            const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0, 0);
+
+
+            // const cluesArray = shuffleArray(Object.values(cluesMap));
             const userObject = {
                 name: teamName,
-                clueNums: cluesArray,
-                currentClueNum: 0
+                clueData: createShuffledCluesMap(),
+                currentClueNum: 0,
+                allCluesFound: false,
+                huntStartTime: startTime.toISOString(),
+                huntEndTime: null
             };
 
             localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
-            document.getElementById('nameInput').style.display = 'none';
+            document.getElementById('formContainer').style.display = 'none';
             document.getElementById('greeting').style.display = '';
             document.getElementById('welcome').textContent = `Happy Hunting, ${userObject.name}!`; // Update the greeting
-            displayClue();
+            checkAdvancement()
+            displayClues();
         }
 
-        // Display Clue
-        function displayClue() {
-            const guid = getGUIDFromURL();
+        function displayClues() {
             const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
-            const messageDiv = document.getElementById('message');
-            const clueDiv = document.getElementById('clue');
+            const currentClueIndex = userObject.currentClueNum
 
-            if (!userObject) {
-                messageDiv.textContent = 'Please enter your name or team name first.';
-                return;
-            }
+            console.log(`current clue index: ${currentClueIndex}`)
+            //get the list of clues
 
-            if (guid && cluesMap[guid]) {
-                const currentClueKey = userObject.clueNums[userObject.currentClueNum];
-                if (guid === currentClueKey) {
-                    clueDiv.textContent = cluesMap[guid];
-                    clueDiv.style.display = 'block';
-                    messageDiv.style.display = 'none';
-                } else {
-                    messageDiv.textContent = 'This clue is not available yet.';
+            userObject.clueData.forEach((element, index) => {
+                if(userObject.allCluesFound) {
+                    createClue("fa-solid fa-star", element[1][1], element[1][0], "complete")
+                    return
                 }
-            } else {
-                messageDiv.textContent = 'Clues will go here';
+                if (index < currentClueIndex) {
+                    createClue("fa-solid fa-check", element[1][1], element[1][0], "solved")
+                } else if (index == currentClueIndex) {
+                    createClue("fa-solid fa-question", element[1][1], "", "working")
+                } 
+            });
+        } 
+
+        function checkAdvancement() {
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
+
+            if (!userObject.allCluesFound) {
+                const guid = getGUIDFromURL()
+                const currentClueIndex = userObject.currentClueNum
+                const currentClueGUID = userObject.clueData[currentClueIndex][0]
+
+                if (currentClueGUID == guid) {
+                    // Check if the object exists
+                    if (userObject) {
+                        // Increment `currentClueNum`
+                        userObject.currentClueNum += 1;
+
+                        // Optionally set `allCluesFound` to true if a condition is met
+                        if (userObject.currentClueNum >= userObject.clueData.length) {
+                            completeHunt(userObject)
+                            return
+                        }
+
+                        // Save the updated object back to local storage
+                        localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
+                    }
+                }
             }
         }
 
-        function getClues() {
-            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
-            currentClueIndex = userObject.currentClueNum
-            console.log(currentClueIndex)
-            // get the list of clues
-            currentClueText = userObject.clueNums[currentClueIndex]
-            console.log(currentClueText)
+        function completeHunt(userObject) {
+            userObject.allCluesFound = true;
+            userObject.huntEndTime = new Date().toISOString()
 
-            // next clue
-            nextClueText = userObject.clueNums[currentClueIndex + 1]
+            var huntDuration = getHuntDuration(userObject.huntStartTime, userObject.huntEndTime)
+            console.log(huntDuration)
 
-
-            // get the guid from the url
-
-            // match the guid to the next clue
-
-            
+            localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
         }
+
+        function createClue(iconClass, title, subtitle, state) {
+            // Create the main clue container
+            const clue = document.createElement("div");
+            clue.className = "clue";
+            clue.classList.add(state)
+
+            // Create the clue icon container
+            const clueIcon = document.createElement("div");
+            clueIcon.className = "clue-icon";
+            clueIcon.classList.add(state)
+
+            // Create the icon itself
+            const icon = document.createElement("i");
+            icon.className = iconClass; // Use the provided FontAwesome icon class
+            clueIcon.appendChild(icon);
+
+            // Create the clue text container
+            const clueText = document.createElement("div");
+            clueText.className = "clue-text";
+
+            // Create the title element
+            const clueTitle = document.createElement("div");
+            clueTitle.className = "clue-title";
+            clueTitle.textContent = title; // Add the provided title text
+
+            // Create the subtitle element
+            const clueSubtitle = document.createElement("div");
+            clueSubtitle.className = "clue-subtitle";
+            clueSubtitle.textContent = subtitle; // Add the provided subtitle text
+
+            // Append title and subtitle to the clue text container
+            clueText.appendChild(clueTitle);
+            clueText.appendChild(clueSubtitle);
+
+            // Append the icon and text containers to the main clue container
+            clue.appendChild(clueIcon);
+            clue.appendChild(clueText);
+
+            // Append the clue to the clue list container in the DOM
+            const clueList = document.querySelector(".clue-list");
+            clueList.appendChild(clue);
+        }
+
+        function getHuntDuration(start, end) {
+            const startTime = new Date(start);
+            const endTime = new Date(end);
+            const diffMs = endTime - startTime; // Difference in milliseconds
+
+            const hours = Math.floor(diffMs / 3600000);
+            const minutes = Math.floor((diffMs % 3600000) / 60000);
+            const seconds = Math.floor((diffMs % 60000) / 1000);
+
+            return `${hours}h ${minutes}m ${seconds}s`;
+        }
+
 
         // On load, check if the user is already set
         window.onload = function () {
             const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
             if (userObject) {
-                document.getElementById('nameInput').style.display = 'none';
+                document.getElementById('formContainer').style.display = 'none';
                 document.getElementById('greeting').style.display = '';
                 document.getElementById('welcome').textContent = `Happy Hunting, ${userObject.name}!`; // Update the greeting
-                displayClue();
-                getClues()
-                console.log(userObject)
+                checkAdvancement()
+                displayClues();
             }
         };
     </script>
