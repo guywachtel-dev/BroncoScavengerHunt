@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js"></script> -->
 
     <title>Bronco Games Scavenger Hunt</title>
     <style>
@@ -104,7 +102,6 @@
                 #ffd700, /* Gold */
                 #ffcc00, /* Bright Yellow-Gold */
                 #e6ac00 /* Deep Gold */
-
             );
         }
         /* Circle with "?" */
@@ -148,8 +145,16 @@
 
         /* Clue subtitle styling */
         .clue-subtitle {
-        font-size: 14px;
-        color: #666; /* Lighter text color */
+        text-align: center;
+        font-weight: bold;
+        margin-top: 10px; /* Adjust as needed */
+        font-size: 18px;
+        color: #222; /* Lighter text color */
+        }
+        .clueListTitle {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
         }
     </style>
 </head>
@@ -170,13 +175,18 @@
     </div>
 
     <div class="clue-list"></div>
-
+    
     <script>
 
         function createShuffledCluesMap() {
-            const cluesMap = {"86b2fc11-f2bc-49f6-80cd-6851e3b68176":["Garbage Goat"," Created by the “Welding Nun” for Expo ’74, this Spokane treasure loves to help keep the area clean of garbage. Make sure to bring him a snack when you visit."],"5136d184-5e6c-461c-8ea2-7925c8a0445c":["Dishman Mica"," These hiking trails can be found in 530 acres of dramatically sculpted rocky hills and ponds right in the middle of Spokane Valley. In fact, the entrance is located off of a main arterial."],"e103bba9-ea83-4859-b61c-7d1318df649e":["Milk Bottle"," This Spokane landmark with quirky architecture is large enough to hold over 12,000 gallons of milkshakes and ice cream. In fact, this diner is very much known for its sweet dairy treats."],"67d2b5a7-8e28-4d68-be36-4b7d6f1a831b":["Big Red Wagon"," This sculpture of a children’s toy from the past is large enough for today’s children and adults to enjoy. Located in the heart of downtown, it’s a hard piece to miss."],"6e563eaf-7785-424d-bfac-1aec2a29d59b":["Mirabeau Point Park"," While this location used to be a Walk in the Wild, this park is now known for its trails and man made waterfall. Your next clue should \"point\" you in the right direction."],"d1c16204-8004-4bad-86dc-510ef48391e4":["Manito Park"," Located in one of the most beautiful parks and gardens in Spokane, this cafe is perfect for enjoying a cold drink and salad on a park bench. Check out the roses while you’re there."]};
-
-            // Convert the object into an array of entries
+            const cluesMap = {
+                "86b2fc11-f2bc-49f6-80cd-6851e3b68176":["Garbage Goat"," Created by the “Welding Nun” for Expo ’74, this Spokane treasure loves to help keep the area clean of garbage. Make sure to bring him a snack when you visit."],
+                "5136d184-5e6c-461c-8ea2-7925c8a0445c":["Dishman Mica"," These hiking trails can be found in 530 acres of dramatically sculpted rocky hills and ponds right in the middle of Spokane Valley. In fact, the entrance is located off of a main arterial."],
+                "e103bba9-ea83-4859-b61c-7d1318df649e":["Milk Bottle"," This Spokane landmark with quirky architecture is large enough to hold over 12,000 gallons of milkshakes and ice cream. In fact, this diner is very much known for its sweet dairy treats."],
+                "67d2b5a7-8e28-4d68-be36-4b7d6f1a831b":["Big Red Wagon"," This sculpture of a children’s toy from the past is large enough for today’s children and adults to enjoy. Located in the heart of downtown, it’s a hard piece to miss."],
+                "6e563eaf-7785-424d-bfac-1aec2a29d59b":["Mirabeau Point Park"," While this location used to be a Walk in the Wild, this park is now known for its trails and man made waterfall. Your next clue should \"point\" you in the right direction."],
+                "d1c16204-8004-4bad-86dc-510ef48391e4":["Manito Park"," Located in one of the most beautiful parks and gardens in Spokane, this cafe is perfect for enjoying a cold drink and salad on a park bench. Check out the roses while you’re there."]
+            };
 
             // Get the keys of the cluesMap and shuffle them
             const shuffledKeys = shuffleArray(Object.keys(cluesMap));
@@ -191,7 +201,6 @@
 
             // Save the shuffled clues map to local storage
             return cluesArray
-            // localStorage.setItem('shuffledCluesMap', JSON.stringify(shuffledCluesMap));
         }
 
         // Shuffle an array
@@ -220,9 +229,8 @@
             // Get today's date
             const now = new Date();
             
-            // Set it to today at 7 AM
-            const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0, 0);
-
+            // Set it to today at 9 AM
+            const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
 
             // const cluesArray = shuffleArray(Object.values(cluesMap));
             const userObject = {
@@ -231,13 +239,14 @@
                 currentClueNum: 0,
                 allCluesFound: false,
                 huntStartTime: startTime.toISOString(),
-                huntEndTime: null
+                huntEndTime: null,
+                huntDuration: null
             };
 
             localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('greeting').style.display = '';
-            document.getElementById('welcome').textContent = `Happy Hunting, ${userObject.name}!`; // Update the greeting
+            document.getElementById('welcome').textContent = `Good Luck, ${userObject.name}!`; // Update the greeting
             checkAdvancement()
             displayClues();
         }
@@ -245,9 +254,6 @@
         function displayClues() {
             const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
             const currentClueIndex = userObject.currentClueNum
-
-            console.log(`current clue index: ${currentClueIndex}`)
-            //get the list of clues
 
             userObject.clueData.forEach((element, index) => {
                 if(userObject.allCluesFound) {
@@ -294,7 +300,18 @@
             userObject.huntEndTime = new Date().toISOString()
 
             var huntDuration = getHuntDuration(userObject.huntStartTime, userObject.huntEndTime)
-            console.log(huntDuration)
+            userObject.huntDuration = huntDuration
+
+            document.getElementById('greeting').style.display = "block";
+            document.getElementById('welcome').innerHTML = `
+                Congratulations ${userObject.name}! <br> 🎉🎉🎉🎉🎉<br><br>
+                You've completed the scavenger hunt in: <br> <br> ${userObject.huntDuration}! Wowza!
+
+                <br><br>
+                Please join the club for lunch at 12:30 @ <br> <br>
+                Emebers by the Lake <br>
+                12008 N Woodland Beach Dr, Hauser, ID 83854
+                `;
 
             localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
         }
@@ -361,7 +378,21 @@
             if (userObject) {
                 document.getElementById('formContainer').style.display = 'none';
                 document.getElementById('greeting').style.display = '';
-                document.getElementById('welcome').textContent = `Happy Hunting, ${userObject.name}!`; // Update the greeting
+
+                if(userObject.allCluesFound) {
+                    document.getElementById('welcome').innerHTML = `
+                        Congratulations ${userObject.name}! <br> 🎉🎉🎉🎉🎉<br><br>
+                        You've completed the scavenger hunt in: <br> <br> ${userObject.huntDuration}! Wowza!
+
+                        <br><br>
+                        Please join the club for lunch at 12:30 @ <br> <br>
+                        Emebers by the Lake <br>
+                        12008 N Woodland Beach Dr, Hauser, ID 83854
+                        `;
+                } else {
+                    document.getElementById('welcome').textContent = `Good Luck, ${userObject.name}!`; // Update the greeting
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                }
                 checkAdvancement()
                 displayClues();
             }
