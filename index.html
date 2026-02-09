@@ -161,7 +161,7 @@
 <body>
     <div class="header">
         <img src="Inland+NW+Bronco+Club+(17).png" alt="Logo" class="logo">
-        <div class="title">Bronco GAMES Scavenger Hunt 2025</div>
+        <div class="title">Bronco GAMES Scavenger Hunt 2026</div>
     </div>
     <div id="greeting" class="greeting" style="display:none">
         <div id="welcome" class="welcome"></div>
@@ -180,12 +180,14 @@
 
         function createShuffledCluesMap() {
             const cluesMap = {
-                "86b2fc11-f2bc-49f6-80cd-6851e3b68176":["Garbage Goat"," Created by the “Welding Nun” for Expo ’74, this Spokane treasure loves to help keep the area clean of garbage. Make sure to bring him a snack when you visit."],
-                "5136d184-5e6c-461c-8ea2-7925c8a0445c":["Dishman Mica"," These hiking trails can be found in 530 acres of dramatically sculpted rocky hills and ponds right in the middle of Spokane Valley. In fact, the entrance is located off of a main arterial."],
-                "e103bba9-ea83-4859-b61c-7d1318df649e":["Milk Bottle"," This Spokane landmark with quirky architecture is large enough to hold over 12,000 gallons of milkshakes and ice cream. In fact, this diner is very much known for its sweet dairy treats."],
-                "67d2b5a7-8e28-4d68-be36-4b7d6f1a831b":["Big Red Wagon"," This sculpture of a children’s toy from the past is large enough for today’s children and adults to enjoy. Located in the heart of downtown, it’s a hard piece to miss."],
-                "6e563eaf-7785-424d-bfac-1aec2a29d59b":["Mirabeau Point Park"," While this location used to be a Walk in the Wild, this park is now known for its trails and man made waterfall. Your next clue should \"point\" you in the right direction."],
-                "d1c16204-8004-4bad-86dc-510ef48391e4":["Manito Park"," Located in one of the most beautiful parks and gardens in Spokane, this cafe is perfect for enjoying a cold drink and salad on a park bench. Check out the roses while you’re there."]
+                "86b2fc11-f2bc-49f6-ac4e-6851e3b68176":["Mirabeau Park","I rest beside the river where quiet paths unwind,A green escape tucked close behind. Long ago, behind fences, animals drew a crowd, Their echoes linger, faint but proud. Bridges, trails, and history mark my part. What place am I, a park with a past?"],
+                "5136d184-5e6c-461c-97bc-7925c8a0445c":["Spokane Falls","I thunder without anger, I speak without a tongue,Older than the city where my story began. I carve through stone with a silver roar, Drawing crowds to my edge who always want more. By bridges and lights, I dance day and night. What am I, a rushing heart in plain sight?"],
+                "e103bba9-ea83-4859-8878-7d1318df649e":["Manito Park","I bloom with secrets in carefully drawn lines,Where roses keep time and the seasons make signs. I’m not a person, though my name sounds so, I’m shaped by calm steps and a soft, steady flow. In green rooms of beauty, I quietly play my part. What place am I, where nature meets art?"],
+                "67d2b5a7-8e28-4d68-3bg4-4b7d6f1a831b":["Plantes Ferry Sports Complex","I stretch wide by the river where the current bends, A meeting ground where effort and teamwork blend. I’m not a boat, though ferry’s in my name, And \“plants\” here grow competition, not grain. With fields marked by lines and cheers in the air, What place am I, where games are played with care?"],
+                "6e563eaf-7785-424d-9762-1aec2a29d59b":["Dishman Hills Natural Area","I’m not flat or polished—I roll and I climb,A wild stretch of land shaped by long, patient time. I sit just outside where the city still shows, With rocky high points and winding paths to roam. My name speaks of hills, and nature’s my call. What place am I, where the quiet feels tall?"],
+                "d1c16204-8004-4bad-0034-510ef48391e4":["Liberty Lake Regional Park","I sit where freedom meets the water’s edge,A wide open space beyond the city’s ledge. Trails loop my forests, swimmers cool my shore, With fields and camps and room for more. My name promises freedom, my view a shining lake. What park am I, where memories you make?"],
+                "6e563eaf-7785-424d-6511-1aec2a2774gh":["Hazzard Fab Worx","Sparks fly where raw steel takes shape,Built for the trail, not the escape. When rocks scrape hard and stock parts fail, I’m the place you go to prep for the trail. My name sounds risky, but my work is tigh. Where do off-road rigs get built right?"],
+                "d1c16204-8004-4bad-8888-510ef482753e":["Felts Field","I’m not a forest, though my name is green, And I’m not soft, though I sound serene. I stretch out long where engines hum, As wings take off and journeys begin. Near the river’s bend and city’s side, What place am I where small planes glide?"]
             };
 
             // Get the keys of the cluesMap and shuffle them
@@ -243,7 +245,7 @@
                 huntDuration: null
             };
 
-            localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
+            localStorage.setItem('scavengerHunt2026', JSON.stringify(userObject));
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('greeting').style.display = '';
             document.getElementById('welcome').textContent = `Good Luck, ${userObject.name}!`; // Update the greeting
@@ -252,7 +254,7 @@
         }
 
         function displayClues() {
-            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026'));
             const currentClueIndex = userObject.currentClueNum
 
             userObject.clueData.forEach((element, index) => {
@@ -269,7 +271,7 @@
         } 
 
         function checkAdvancement() {
-            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026'));
 
             if (!userObject.allCluesFound) {
                 const guid = getGUIDFromURL()
@@ -289,7 +291,7 @@
                         }
 
                         // Save the updated object back to local storage
-                        localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
+                        localStorage.setItem('scavengerHunt2026', JSON.stringify(userObject));
                     }
                 }
             }
@@ -313,7 +315,7 @@
                 12008 N Woodland Beach Dr, Hauser, ID 83854
                 `;
 
-            localStorage.setItem('scavengerHunt', JSON.stringify(userObject));
+            localStorage.setItem('scavengerHunt2026', JSON.stringify(userObject));
         }
 
         function createClue(iconClass, title, subtitle, state) {
@@ -374,7 +376,7 @@
 
         // On load, check if the user is already set
         window.onload = function () {
-            const userObject = JSON.parse(localStorage.getItem('scavengerHunt'));
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026'));
             if (userObject) {
                 document.getElementById('formContainer').style.display = 'none';
                 document.getElementById('greeting').style.display = '';
