@@ -20,8 +20,21 @@
             background-color: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 10%;
+            font-weight: lighter;
+        }
+        .dedication {
+            font-size: small;
+            font-style: italic;
+        }
         .logo {
             max-width: 70%;
+            max-height: 10%;
             margin-bottom: 10px;
         }
         .title {
@@ -77,6 +90,7 @@
         .clue-list {
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 16px; /* Spacing between clues */
         }
 
@@ -84,7 +98,9 @@
         .clue {
         display: flex;
         align-items: center;
+        justify-content: center;
         border-radius: 12px; 
+        max-width: fit-content;
         margin-left: 8px;
         margin-right: 8px;
         padding: 12px;
@@ -134,6 +150,9 @@
         .clue-text {
         display: flex;
         flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        white-space: pre-line;
         }
 
         /* Clue title styling */
@@ -160,34 +179,71 @@
 </head>
 <body>
     <div class="header">
-        <img src="Inland+NW+Bronco+Club+(17).png" alt="Logo" class="logo">
-        <div class="title">Bronco GAMES Scavenger Hunt 2026</div>
+        <img src="brokenBroncoGaragetransparent.png" alt="Logo" class="logo">
+        <div class="title">Scavenger Hunt</div>
     </div>
-    <div id="greeting" class="greeting" style="display:none">
-        <div id="welcome" class="welcome"></div>
+    
+    <div id="greeting" class="greeting">
+        <div id="welcome" class="welcome">        
+            <div>Welcome to the Broken Bronco Garage Scavenger Hunt</div>
+            <br>
+            <div>Please enter your name (or your team name) below.</div>
+            <br>
+            <div>When you're ready, click <b>Start Hunt</b> to start your timer and begin! </div>
+        </div>
     </div>
+
     <div class="formContainer" id="formContainer">
-        <div id="message" class="error"></div>
         <div class="name-input" id="nameInput">
-            <input type="text" id="teamName" placeholder="Enter your Name/Team Name" required>
-            <button onclick="submitName()">Submit</button>
+            <input type="text" id="teamName" placeholder="Name/Team Name" required>
+            <button onclick="submitName()">Start Hunt</button>
         </div>
     </div>
 
     <div class="clue-list"></div>
+
+    <div class="footer">
+        <div class="dedication"> For Randi - So you don't have to run all over town.</div>
+        <br>
+        <div> This app is basic af... Want something more, or need  different app or website?.</div>
+        <a class="email-link"
+            href=
+                "mailto:gewachtel@gmail.com?subject=Bronco Scavenger Hunt&body=Hello, I would like to know more about...">
+            Shoot me an email
+        </a>
+        <br><br>
+        <div>Guy W. - 2026</div>
+
+    </div>
     
     <script>
 
         function createShuffledCluesMap() {
             const cluesMap = {
-                "86b2fc11-f2bc-49f6-ac4e-6851e3b68176":["Mirabeau Park","I rest beside the river where quiet paths unwind,A green escape tucked close behind. Long ago, behind fences, animals drew a crowd, Their echoes linger, faint but proud. Bridges, trails, and history mark my part. What place am I, a park with a past?"],
-                "5136d184-5e6c-461c-97bc-7925c8a0445c":["Spokane Falls","I thunder without anger, I speak without a tongue,Older than the city where my story began. I carve through stone with a silver roar, Drawing crowds to my edge who always want more. By bridges and lights, I dance day and night. What am I, a rushing heart in plain sight?"],
-                "e103bba9-ea83-4859-8878-7d1318df649e":["Manito Park","I bloom with secrets in carefully drawn lines,Where roses keep time and the seasons make signs. I’m not a person, though my name sounds so, I’m shaped by calm steps and a soft, steady flow. In green rooms of beauty, I quietly play my part. What place am I, where nature meets art?"],
-                "67d2b5a7-8e28-4d68-3bg4-4b7d6f1a831b":["Plantes Ferry Sports Complex","I stretch wide by the river where the current bends, A meeting ground where effort and teamwork blend. I’m not a boat, though ferry’s in my name, And \“plants\” here grow competition, not grain. With fields marked by lines and cheers in the air, What place am I, where games are played with care?"],
-                "6e563eaf-7785-424d-9762-1aec2a29d59b":["Dishman Hills Natural Area","I’m not flat or polished—I roll and I climb,A wild stretch of land shaped by long, patient time. I sit just outside where the city still shows, With rocky high points and winding paths to roam. My name speaks of hills, and nature’s my call. What place am I, where the quiet feels tall?"],
-                "d1c16204-8004-4bad-0034-510ef48391e4":["Liberty Lake Regional Park","I sit where freedom meets the water’s edge,A wide open space beyond the city’s ledge. Trails loop my forests, swimmers cool my shore, With fields and camps and room for more. My name promises freedom, my view a shining lake. What park am I, where memories you make?"],
-                "6e563eaf-7785-424d-6511-1aec2a2774gh":["Hazzard Fab Worx","Sparks fly where raw steel takes shape,Built for the trail, not the escape. When rocks scrape hard and stock parts fail, I’m the place you go to prep for the trail. My name sounds risky, but my work is tigh. Where do off-road rigs get built right?"],
-                "d1c16204-8004-4bad-8888-510ef482753e":["Felts Field","I’m not a forest, though my name is green, And I’m not soft, though I sound serene. I stretch out long where engines hum, As wings take off and journeys begin. Near the river’s bend and city’s side, What place am I where small planes glide?"]
+                "a3f9c1d2-7b44-4f91-9c2a-1e5d6a8b2f01": [
+                    "Little River",
+                    "In 1966, Ford built the first Bronco to compete with the Jeep CJ. It was made for places just like Townsend—known as the Peaceful Side of the Smokies. \r\n \r\n What river runs through Townsend, Tennessee?"
+                ],
+                "b7e2a6c4-3d91-4a5f-8c77-2f8b9d0e6a12": [
+                    "Great Smoky Mountains National Park",
+                    "In 1978, the Bronco became full-size—built on an F-150 platform. Bigger meant longer adventures. \r\n \r\n What national park borders Townsend, TN?"
+                ],
+                "c1d8e5f7-9a33-4b62-b8a1-3c7e2f9d4b23": [
+                    "Great Smoky Mountains Heritage Center",
+                    "In 1980, the Bronco was redesigned—lighter, more efficient, and built on the F-Series platform. Around the same time, Townsend worked to preserve its past boopboop. \r\n \r\n What is the name of the museum in Townsend, Tennessee that showcases the history of the Smoky Mountains?"
+                ],
+                "d4a7b9c2-6f88-4e1a-9d55-4e2c7a1f8c34": [
+                    "Townsend Wye",
+                    "The 4th Gen Bronco got smoother and more refined. Just like this place—where roads split and adventures begin. \r\n \r\n What is the name of the fork in the road near Townsend where two rivers meet?"
+                ],
+                "e9c3f2a1-5b77-4d90-a6c8-5f1e3b7a9d45": [
+                    "Shell Gas Station Townsend TN",
+                    "1996 marked the end of the Bronco—for a while. The last of the full-size legends before a 25-year break. Every road trip and trail run starts the same way… \r\n \r\n Head to the Shell station in Townsend—where Broncos fuel up before the adventure."
+                ],
+                "f2b6d8a9-1c55-4a73-b3e9-6a4d2f8c7e56": [
+                    "Cades Cove Loop Road",
+                    "In 2021, the Bronco returned—trail ready with GOAT Modes. One of the most famous scenic drives near Townsend is known for wildlife and history. \r\n \r\n What is the name of this scenic loop?"
+                ]
             };
 
             // Get the keys of the cluesMap and shuffle them
@@ -231,8 +287,8 @@
             // Get today's date
             const now = new Date();
             
-            // Set it to today at 9 AM
-            const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
+            // Set the start time as soon as someone scans in.
+            const startTime = new Date();
 
             // const cluesArray = shuffleArray(Object.values(cluesMap));
             const userObject = {
@@ -245,16 +301,18 @@
                 huntDuration: null
             };
 
-            localStorage.setItem('scavengerHunt2026', JSON.stringify(userObject));
+            localStorage.setItem('scavengerHunt2026-02', JSON.stringify(userObject));
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('greeting').style.display = '';
-            document.getElementById('welcome').textContent = `Good Luck, ${userObject.name}!`; // Update the greeting
+            document.getElementById('greeting').innerHTML = '';
+
+            document.getElementById('greeting').textContent = `Good Luck, ${userObject.name}!`; // Update the greeting
             checkAdvancement()
             displayClues();
         }
 
         function displayClues() {
-            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026'));
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026-02'));
             const currentClueIndex = userObject.currentClueNum
 
             userObject.clueData.forEach((element, index) => {
@@ -271,7 +329,7 @@
         } 
 
         function checkAdvancement() {
-            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026'));
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026-02'));
 
             if (!userObject.allCluesFound) {
                 const guid = getGUIDFromURL()
@@ -291,7 +349,7 @@
                         }
 
                         // Save the updated object back to local storage
-                        localStorage.setItem('scavengerHunt2026', JSON.stringify(userObject));
+                        localStorage.setItem('scavengerHunt2026-02', JSON.stringify(userObject));
                     }
                 }
             }
@@ -305,17 +363,21 @@
             userObject.huntDuration = huntDuration
 
             document.getElementById('greeting').style.display = "block";
-            document.getElementById('welcome').innerHTML = `
+            document.getElementById('greeting').innerHTML = `
                 Congratulations ${userObject.name}! <br> 🎉🎉🎉🎉🎉<br><br>
                 You've completed the scavenger hunt in: <br> <br> ${userObject.huntDuration}! Wowza!
 
                 <br><br>
-                Please join the club for lunch at 12:30 @ <br> <br>
-                Emebers by the Lake <br>
-                12008 N Woodland Beach Dr, Hauser, ID 83854
+                You’ve chased the trails and solved each score, <br>
+                But one last stop will settle the score. <br><br>
+                Where Broncos roam and legends ride, <br>
+                Find the horses running wild with pride. <br><br>
+
+                Head back now—don’t miss the course… <br>
+                Your finish line waits at Wild Horses.”
                 `;
 
-            localStorage.setItem('scavengerHunt2026', JSON.stringify(userObject));
+            localStorage.setItem('scavengerHunt2026-02', JSON.stringify(userObject));
         }
 
         function createClue(iconClass, title, subtitle, state) {
@@ -376,23 +438,28 @@
 
         // On load, check if the user is already set
         window.onload = function () {
-            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026'));
+            const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026-02'));
             if (userObject) {
                 document.getElementById('formContainer').style.display = 'none';
                 document.getElementById('greeting').style.display = '';
+                document.getElementById('greeting').innerHTML = '';
 
                 if(userObject.allCluesFound) {
-                    document.getElementById('welcome').innerHTML = `
+                    document.getElementById('greeting').innerHTML = `
                         Congratulations ${userObject.name}! <br> 🎉🎉🎉🎉🎉<br><br>
                         You've completed the scavenger hunt in: <br> <br> ${userObject.huntDuration}! Wowza!
 
                         <br><br>
-                        Please join the club for lunch at 12:30 @ <br> <br>
-                        Emebers by the Lake <br>
-                        12008 N Woodland Beach Dr, Hauser, ID 83854
+                        You’ve chased the trails and solved each score, <br>
+                        But one last stop will settle the score. <br><br>
+                        Where Broncos roam and legends ride, <br>
+                        Find the horses running wild with pride. <br><br>
+
+                        Head back now—don’t miss the course… <br>
+                        Your finish line waits at Wild Horses.”
                         `;
                 } else {
-                    document.getElementById('welcome').textContent = `Good Luck, ${userObject.name}!`; // Update the greeting
+                    document.getElementById('greeting').textContent = `Good Luck, ${userObject.name}!`; // Update the greeting
                     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
                 }
                 checkAdvancement()
