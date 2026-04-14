@@ -179,7 +179,7 @@
 </head>
 <body>
     <div class="header">
-        <img src="brokenBroncoGaragetransparent.png" alt="Logo" class="logo">
+        <img src="Logo02.jpg" alt="Logo" class="logo">
         <div class="title">Scavenger Hunt</div>
     </div>
     
@@ -439,7 +439,10 @@
         // On load, check if the user is already set
         window.onload = function () {
             const userObject = JSON.parse(localStorage.getItem('scavengerHunt2026-02'));
-            if (userObject) {
+            userObject.clueData.forEach(element => {
+                console.log(element)
+                
+            });            if (userObject) {
                 document.getElementById('formContainer').style.display = 'none';
                 document.getElementById('greeting').style.display = '';
                 document.getElementById('greeting').innerHTML = '';
